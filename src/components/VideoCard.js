@@ -3,7 +3,6 @@ import React from 'react'
 function VideoCard({url,thumbnail,duration,channelTitle,channelLink,descTitle,views,likes,publish}) {
   return (
     <div className='flex w-[400px] flex-col rounded-lg z-10 duration-100 hover:scale-105'>
-      <a href={"https://www.youtube.com/watch?v="+ url}>
       <div className='relative'>
         <img src={thumbnail} alt="thumbnail" 
       className='rounded-lg bg-conatin relative'
@@ -13,13 +12,10 @@ function VideoCard({url,thumbnail,duration,channelTitle,channelLink,descTitle,vi
         }
         </span></div>
       <h2 className=' text-base font-medium'>{descTitle}</h2>
-        
       
-      </a>
-      
-      <a href={'https://www.youtube.com/channel/' +channelLink }>
+      {/* <a href={'https://www.youtube.com/channel/' +channelLink }>
       <h2 >{channelTitle}</h2>
-      </a>
+      </a> */}
       
       
       <p>

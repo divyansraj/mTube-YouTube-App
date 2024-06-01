@@ -15,11 +15,10 @@ const Head = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowsuggestions] = useState(false);
   const [selectedItem, setSelectedItem] = useState(-1);
-  const searchCache = useSelector(store => store.cache)
+  const searchCache = useSelector((store) => store.cache);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const toggleBar = () => {
     dispatch(toggleMenu());
@@ -27,14 +26,13 @@ const Head = () => {
 
   //debouncing and caching for search optimisation
   useEffect(() => {
-    const timer = setTimeout(() =>{
+    const timer = setTimeout(() => {
       if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
-      }
-      else {
+      } else {
         getSearchSuggestions();
       }
-      }, 200);
+    }, 200);
     return () => {
       clearTimeout(timer);
     };
@@ -48,30 +46,26 @@ const Head = () => {
 
     //updating the cacheresults
 
-    dispatch(cacheResults({
-      [searchQuery] : json[1]
-    }));
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
 
-    console.log(json[1]);
+    //console.log(json[1]);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setShowsuggestions(false)
+    setShowsuggestions(false);
     navigate(`/search?query=${searchQuery}`);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "ArrowUp" && selectedItem >= 0) {
-      setSelectedItem((prev) => prev - 1);
-    } else if (e.key === "ArrowDown" && selectedItem < 10) {
-      setSelectedItem((prev) => prev + 1);
-    } else if (e.key === "Enter" && selectedItem >= 0) {
-      setSearchQuery(suggestions[selectedItem]);
-      navigate(`/search?query=${suggestions[selectedItem]}`);
-    }
+  const handleSuggestionClick = (searchTerm) => {
+    setSearchQuery(searchTerm);
+    setShowsuggestions(false);
+    navigate(`/search?query=${searchTerm}`);
   };
-
 
   return (
     <div className="">
@@ -98,7 +92,6 @@ const Head = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowsuggestions(true)}
             onBlur={() => setShowsuggestions(false)}
-            onKeyDown={handleKeyDown}
           ></input>
           <div>
             <FontAwesomeIcon
@@ -122,12 +115,9 @@ const Head = () => {
             {suggestions.map((each, index) => (
               <li
                 key={index}
-                className={
-                  selectedItem === index
-                    ? "flex items-center py-2 px-3 rounded-xl text-lg duration-150 shadow-sm bg-gray-100 cursor-pointer"
-                    : "flex items-center py-2 px-3 rounded-xl shadow-sm hover:bg-gray-100 cursor-pointer"
-                }
-                
+                className="flex items-center py-2 px-3 rounded-xl text-md duration-150 shadow-sm bg-gray-50 cursor-pointer hover:bg-gray-100"
+
+                onMouseDown={() => handleSuggestionClick(each)}
               >
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="w-8" />
                 <div
