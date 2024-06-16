@@ -84,8 +84,8 @@ function VideoContainer() {
       ) : (
         <div className="flex flex-row gap-3 flex-wrap justify-center items-center ml-auto mr-0">
           <ButtonList />
-          {visibleVideos.map((video) => (
-            <Link to={`/watch?v=${video.id}`} key={video.id}>
+          {visibleVideos.map((video,index) => (
+            <Link to={`/watch?v=${video.id}`} key={index}>
               <VideoCard
                 key={video.id}
                 url={video.id}
