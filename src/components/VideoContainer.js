@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ButtonList from "./ButtonList";
 import VideoCard from "./VideoCard";
-import { POPULAR_VIDEOS_API } from "../utils/constant";
+import { API_KEY } from "../utils/constant";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openMenu } from "../utils/MenuSlice";
@@ -9,37 +9,82 @@ import Shimmer from "./Shimmer";
 
 function VideoContainer() {
   const [popVideos, setPopVideos] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [visibleVideos, setVisibleVideos] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(openMenu());
-    getVideos();
+    resetAndFetchVideos();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getVideos = async () => {
+  const resetAndFetchVideos = async () => {
+    setPopVideos([]);
+    setVisibleVideos([]);
+    setNextPageToken(null);
+    await fetchVideos();
+  };
+
+  const fetchVideos = async (pageToken = "") => {
+    if (loading) return;
+    setLoading(true);
+
     try {
-      const data = await fetch(POPULAR_VIDEOS_API);
-      const json = await data.json();
-	  console.log(json)
-      setPopVideos(json.items);
-      setLoading(false); // Once data is fetched, set loading to false
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=50&regionCode=IN&key=${API_KEY}&pageToken=${pageToken}`
+      );
+      const data = await response.json();
+      console.log(data);
+
+      setPopVideos((prev) => [...prev, ...data.items]);
+      setVisibleVideos((prev) => [...prev, ...data.items.slice(0, 6)]);
+      setNextPageToken(data.nextPageToken);
     } catch (error) {
       console.error("Error fetching videos:", error);
-      setLoading(false); // Handle error state
+    }
+
+    setLoading(false);
+  };
+
+  const loadMoreVideos = () => {
+    const nextVideos = popVideos.slice(
+      visibleVideos.length,
+      visibleVideos.length + 6
+    );
+
+    if (nextVideos.length === 0 && nextPageToken) {
+      fetchVideos(nextPageToken);
+    } else {
+      setVisibleVideos((prev) => [...prev, ...nextVideos]);
     }
   };
 
-  // Return JSX based on loading state
+  const handleScrollEvent = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop + 1 >=
+      document.documentElement.scrollHeight
+    ) {
+      loadMoreVideos();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollEvent);
+    return () => {
+      window.removeEventListener("scroll", handleScrollEvent);
+    };
+  }, [popVideos, visibleVideos, nextPageToken]);
+
   return (
     <>
-      {loading ? (
+      {loading && visibleVideos.length === 0 ? (
         <Shimmer />
       ) : (
         <div className="flex flex-row gap-3 flex-wrap justify-center items-center ml-auto mr-0">
           <ButtonList />
-          {popVideos.map((video) => (
+          {visibleVideos.map((video) => (
             <Link to={`/watch?v=${video.id}`} key={video.id}>
               <VideoCard
                 key={video.id}
@@ -58,6 +103,7 @@ function VideoContainer() {
               />
             </Link>
           ))}
+          {loading && <Shimmer />}
         </div>
       )}
     </>
