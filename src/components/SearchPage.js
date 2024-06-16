@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { API_KEY } from "../utils/constant";
 import { Link, useSearchParams } from "react-router-dom";
 import SearchVideoCard from "./SearchVideoCard";
+import ButtonList from "./ButtonList";
+import ShimmerBox from "./Shimmer";
 
 const SearchPage = () => {
   const [searchParam] = useSearchParams();
@@ -74,20 +76,27 @@ const SearchPage = () => {
   }, [allResults, visibleResults, nextPageToken]);
 
   return (
-    <div className="flex flex-row flex-wrap gap-5 justify-center items-center">
-      {visibleResults.map((video) => (
-        <Link to={"/watch?v=" + video.id.videoId} key={video?.id.videoId}>
-          <SearchVideoCard
-            key={video?.id.videoId}
-            title={video?.snippet?.title}
-            url={video?.id?.videoId}
-            channelTitle={video?.snippet?.channelTitle}
-            thumbnail={video?.snippet?.thumbnails?.high?.url}
-            publish={video?.snippet?.publishedAt}
-          />
-        </Link>
-      ))}
-    </div>
+    <>
+      {loading ? (
+        <ShimmerBox />
+      ) : (
+        <div className="flex flex-row flex-wrap gap-5 justify-center items-center">
+          <ButtonList />
+          {visibleResults.map((video) => (
+            <Link to={"/watch?v=" + video.id.videoId} key={video?.id.videoId}>
+              <SearchVideoCard
+                key={video?.id.videoId}
+                title={video?.snippet?.title}
+                url={video?.id?.videoId}
+                channelTitle={video?.snippet?.channelTitle}
+                thumbnail={video?.snippet?.thumbnails?.high?.url}
+                publish={video?.snippet?.publishedAt}
+              />
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

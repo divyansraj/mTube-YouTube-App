@@ -1,15 +1,14 @@
 import React from "react";
 import Button from "./Button";
 
-function ButtonList() {
+const ButtonList = () => {
+  const list = ["Explore","India","Trending","Entertainment","Superheros","Live","Web development","Gaming","Cricket","Computer Science","Music","Nodejs","React","Sports"];
 
-  const list = ["All","Trending","News","Superhero movies","Live","Gaming","Cooking","Cricket","Computer Science","Recently Uploaded","Liked","New to you"]
   return (
-    <div className="flex">
-      {
-        list.map((comp,index) => 
-          <Button name= {comp} key={index} ></Button>)
-      }
+    <div className="flex overflow-x-auto max-w-full space-x-2 py-2">
+      {list.map((comp, index) => (
+        <Button name={comp} key={index} />
+      ))}
     </div>
   );
 }
