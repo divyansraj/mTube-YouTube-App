@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { closeMenu } from "../utils/MenuSlice";
 import CommentsContainer from "./CommentsContainer";
 import RelatedVideoCard from "./RelatedVideoCard"; // Assuming RelatedVideoCard component is defined
-import { API_KEY } from "../utils/constant";
+import { API_KEY, CATEGORY_RELATED_API, CURRENT_VIDEO_DETAILS_API } from "../utils/constant";
 
 const WatchPage = () => {
   const location = useLocation();
@@ -33,7 +33,7 @@ const WatchPage = () => {
       try {
         // Fetch details of the current video to get its snippet and category ID
         const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${API_KEY}`
+          CURRENT_VIDEO_DETAILS_API + `id=${videoId}&key=${API_KEY}`
         );
         const data = await response.json();
 
@@ -63,7 +63,7 @@ const WatchPage = () => {
     try {
       // Fetch related videos based on the category ID
       const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&order=date&videosCategoryId=${categoryId}&key=${API_KEY}`
+        CATEGORY_RELATED_API + `CategoryId=${categoryId}&key=${API_KEY}`
       );
       const data = await response.json();
 

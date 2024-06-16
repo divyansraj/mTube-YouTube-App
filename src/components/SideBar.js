@@ -14,14 +14,6 @@ const SideBar = () => {
 
   return (
     <div className="flex flex-col gap-2 w-56 bg-white z-50">
-      {/* <div className="flex">
-        <div className="outline-none rounded-md flex items-center w-10 h-8">
-        <FontAwesomeIcon icon={faBars}  onClick={()=> toggleBar()}/>  
-        </div>
-        <div className="outline-none rounded-md flex items-center w-10 h-8 bg-black">
-          <img src={Logo} alt="logo"></img>MTube
-        </div>
-    </div> */}
       <ul>
         <Link to="/">
           <li className="flex gap-2 justify-start items-center p-2 cursor-pointer hover:bg-gray-200">

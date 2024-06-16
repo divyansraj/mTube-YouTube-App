@@ -2,7 +2,7 @@ import React from "react";
 import Button from "./Button";
 
 const ButtonList = () => {
-  const list = ["Explore","India","Trending","Entertainment","Superheros","Live","Web development","Gaming","Cricket","Computer Science","Music","Nodejs","React","Sports"];
+  const list = ["Explore","India","Trending","Cricket World Cup","Superheros","Live News","Web development","Gaming","Computer Science","Music","Nodejs","React","Fifa 2025"];
 
   return (
     <div className="flex overflow-x-auto max-w-full space-x-2 py-2">

@@ -32,7 +32,7 @@ const SearchPage = () => {
 
     try {
       const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&regionCode=IN&q=${searchQuery}&type=video&key=${API_KEY}&pageToken=${pageToken}`
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&regionCode=IN&type=video&q=${searchQuery}&key=${API_KEY}&pageToken=${pageToken}`
       );
       const data = await response.json();
 
