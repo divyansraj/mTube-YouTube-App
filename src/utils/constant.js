@@ -13,4 +13,8 @@ export const CURRENT_VIDEO_DETAILS_API =
   "https://www.googleapis.com/youtube/v3/videos?part=snippet&";
 
 export const YOUTUBE_SEARCH_API =
-  "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+  "https://cors-handlers.vercel.app/api/?url=http%3A%2F%2Fsuggestqueries.google.com%2Fcomplete%2Fsearch%3Fclient%3Dfirefox%26ds%3Dyt%26q%3D";
+
+
+  //https://cors-handlers.vercel.app/api/?url=http%3A%2F%2Fsuggestqueries.google.com%2Fcomplete%2Fsearch%3Fclient%3Dfirefox%26ds%3Dyt%26q%3D
+  // "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="
